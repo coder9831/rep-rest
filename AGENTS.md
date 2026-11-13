@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Workout plan is stored as JSON on `plans` (one row per user) and every save also writes a full snapshot to `plan_versions`; sessions copy the day into `day_snapshot` so plan edits never alter past logs.
+- Signed-in pages live under `src/routes/_authenticated/` (client-only gate) and read/write data with the browser client under row-level security; only account deletion uses a server function.
