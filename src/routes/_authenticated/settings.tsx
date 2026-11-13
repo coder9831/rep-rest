@@ -6,11 +6,12 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/PageHeader";
+import { LogOut, Trash2, UserRound } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { deleteAccount } from "@/lib/account.functions";
 
 export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({ meta: [{ title: "Settings — Tife's Weight Tracker" }, { name: "description", content: "Account settings." }] }),
+  head: () => ({ meta: [{ title: "Settings — Tife's Weight Tracker" }, { name: "description", content: "Account settings." }, { property: "og:title", content: "Settings — Tife's Weight Tracker" }, { property: "og:description", content: "Account settings." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: SettingsPage,
 });
 
@@ -34,15 +35,16 @@ function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Settings" />
-      <section className="rounded-2xl border border-border bg-card p-4">
+      <PageHeader title="Settings" sub="Your account and preferences." />
+      <section className="page-section">
+        <UserRound className="mb-4 h-7 w-7 text-primary" />
         <div className="text-lg font-bold">{profile.data?.name ?? "—"}</div>
-        <div className="text-muted-foreground">{profile.data?.email}</div>
+        <div className="break-words text-sm text-muted-foreground">{profile.data?.email}</div>
         <p className="mt-2 text-sm text-muted-foreground">All weights are in pounds (lb).</p>
       </section>
-      <Button size="xl" variant="secondary" className="w-full" onClick={signOut}>Sign out</Button>
+      <Button size="xl" variant="secondary" onClick={signOut}><LogOut /> Sign out</Button>
       <AlertDialog>
-        <AlertDialogTrigger asChild><Button size="xl" variant="destructive" className="w-full">Delete account</Button></AlertDialogTrigger>
+        <div className="page-section"><h2 className="mb-3 font-bold">Account deletion</h2><AlertDialogTrigger asChild><Button size="xl" variant="outline" className="text-destructive" ><Trash2 />Delete account</Button></AlertDialogTrigger></div>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete your account?</AlertDialogTitle>

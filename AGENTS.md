@@ -31,3 +31,4 @@ use the editor.
 
 - Workout plan is stored as JSON on `plans` (one row per user) and every save also writes a full snapshot to `plan_versions`; sessions copy the day into `day_snapshot` so plan edits never alter past logs.
 - Signed-in pages live under `src/routes/_authenticated/` (client-only gate) and read/write data with the browser client under row-level security; only account deletion uses a server function.
+- Shared visual roles and section styles live in `src/styles.css`, with navigation in the authenticated layout and headings in `PageHeader`, so presentation changes remain consistent without touching training data.

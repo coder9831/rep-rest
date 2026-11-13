@@ -11,7 +11,7 @@ import { fetchFinishedLogs, lastByExercise, exKey } from "@/lib/data";
 import { fmtDuration, type WorkoutDay } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/workout/$sessionId")({
-  head: () => ({ meta: [{ title: "Workout — Tife's Weight Tracker" }, { name: "description", content: "Workout in progress." }] }),
+  head: () => ({ meta: [{ title: "Workout — Tife's Weight Tracker" }, { name: "description", content: "Workout in progress." }, { property: "og:title", content: "Workout — Tife's Weight Tracker" }, { property: "og:description", content: "Workout in progress." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: WorkoutPage,
 });
 
@@ -157,7 +157,7 @@ function WorkoutPage() {
         const prev = last.get(exKey(first));
         const plan = day?.exercises.find((e) => e.name === name);
         return (
-          <section key={name} className="rounded-2xl border border-border bg-card p-4">
+          <section key={name} className="page-section">
             <div className="flex items-baseline justify-between gap-2">
               <h2 className="text-xl font-bold">{name}</h2>
               {plan && <span className="text-xs text-muted-foreground">{plan.sets}×{plan.reps} · rest {plan.rest}s</span>}
@@ -173,10 +173,10 @@ function WorkoutPage() {
                 <span className="text-center text-lg font-bold">{r.set_number}</span>
                 <Input inputMode="decimal" value={r.weight ?? ""} onChange={(e) => edit(r.id, { weight: e.target.value === "" ? null : Number(e.target.value) || 0 })} className="h-14 text-center text-xl font-bold" aria-label={`Set ${r.set_number} weight`} />
                 <Input inputMode="numeric" value={r.reps ?? ""} onChange={(e) => edit(r.id, { reps: e.target.value === "" ? null : parseInt(e.target.value) || 0 })} className="h-14 text-center text-xl font-bold" aria-label={`Set ${r.set_number} reps`} />
-                <button onClick={() => toggle(r)} aria-label={r.completed ? "Mark set not done" : "Mark set done"}
-                  className={`flex h-14 w-14 items-center justify-center rounded-xl border-2 transition ${r.completed ? "border-primary bg-primary text-primary-foreground shadow-glow" : "border-border text-muted-foreground hover:border-primary"}`}>
+                <Button variant="outline" onClick={() => toggle(r)} aria-label={r.completed ? "Mark set not done" : "Mark set done"}
+                  className={`flex h-14 w-14 items-center justify-center rounded-lg border-2 p-0 transition [&_svg]:size-7 ${r.completed ? "border-primary bg-primary text-primary-foreground shadow-glow" : "border-border text-muted-foreground hover:border-primary"}`}>
                   <Check className="h-7 w-7" strokeWidth={3} />
-                </button>
+                </Button>
               </div>
             ))}
             <Textarea placeholder="Exercise notes (optional)" value={first.exercise_notes ?? ""} onChange={(e) => editExNotes(name, e.target.value)} className="mt-3 min-h-10" />
@@ -184,7 +184,7 @@ function WorkoutPage() {
         );
       })}
 
-      <section className="rounded-2xl border border-border bg-card p-4">
+      <section className="page-section">
         <h2 className="mb-2 font-bold">Session notes</h2>
         <Textarea placeholder="e.g. left shoulder tight" value={notes} onChange={(e) => editSessionNotes(e.target.value)} />
       </section>
@@ -193,7 +193,7 @@ function WorkoutPage() {
       <Button variant="ghost" className="w-full text-muted-foreground" onClick={discard}>Discard workout</Button>
 
       {rest && restLeft > 0 && (
-        <div className="fixed inset-x-0 bottom-20 z-50 px-4 md:bottom-6 md:left-56">
+        <div className="fixed inset-x-0 bottom-20 z-50 px-4 md:bottom-6 md:left-60">
           <div className="mx-auto flex max-w-3xl items-center gap-4 rounded-2xl bg-gradient-primary p-4 text-primary-foreground shadow-glow">
             <Timer className="h-8 w-8 shrink-0" />
             <div className="min-w-0 flex-1">

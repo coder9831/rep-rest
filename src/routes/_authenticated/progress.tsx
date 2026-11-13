@@ -4,11 +4,12 @@ import { useMemo, useState } from "react";
 import { CartesianGrid, Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from "recharts";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
+import { TrendingUp } from "lucide-react";
 import { fetchFinishedLogs, exKey } from "@/lib/data";
 import { epley, volume } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/progress")({
-  head: () => ({ meta: [{ title: "Progress — Tife's Weight Tracker" }, { name: "description", content: "Strength and volume charts." }] }),
+  head: () => ({ meta: [{ title: "Progress — Tife's Weight Tracker" }, { name: "description", content: "Strength and volume charts." }, { property: "og:title", content: "Progress — Tife's Weight Tracker" }, { property: "og:description", content: "Strength and volume charts." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: ProgressPage,
 });
 
@@ -54,11 +55,11 @@ function ProgressPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Progress" />
-      {q.isSuccess && logs.length === 0 && <p className="text-muted-foreground">Finish a workout to see your progress here.</p>}
+      <PageHeader title="Your progress" sub="Strength, volume, and every rep that counts." />
+      {q.isSuccess && logs.length === 0 && <div className="flex flex-col items-center border-y border-border py-16 text-center"><TrendingUp className="mb-4 h-10 w-10 text-primary" /><h2 className="text-xl font-bold">Every session adds up.</h2><p className="mt-2 text-sm text-muted-foreground">Finish a workout to see your progress here.</p></div>}
 
       {exercises.length > 0 && (
-        <section className="rounded-2xl border border-border bg-card p-4">
+        <section className="page-section">
           <div className="flex flex-wrap items-center gap-2">
             <select value={current} onChange={(e) => setEx(e.target.value)} className="h-11 flex-1 rounded-md border border-input bg-background px-3 font-semibold">
               {exercises.map(([k, n]) => <option key={k} value={k}>{n}</option>)}
@@ -84,7 +85,7 @@ function ProgressPage() {
       )}
 
       {logs.length > 0 && (
-        <section className="rounded-2xl border border-border bg-card p-4">
+        <section className="page-section">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-bold">Volume split</h2>
             <div className="flex rounded-lg bg-secondary p-1">

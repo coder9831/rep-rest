@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowDown, ArrowUp, Copy, Plus, Trash2, History } from "lucide-react";
+import { ArrowDown, ArrowUp, Copy, Plus, Trash2, History, CalendarDays, Save, Dumbbell, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +12,7 @@ import { fetchExercises, fetchPlan, savePlan } from "@/lib/data";
 import { WEEKDAYS, nameKey, uid, type PlanSnapshot, type WorkoutDay, type PlanExercise } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/plan")({
-  head: () => ({ meta: [{ title: "Plan — Tife's Weight Tracker" }, { name: "description", content: "Edit your weekly workout plan." }] }),
+  head: () => ({ meta: [{ title: "Plan — Tife's Weight Tracker" }, { name: "description", content: "Edit your weekly workout plan." }, { property: "og:title", content: "Plan — Tife's Weight Tracker" }, { property: "og:description", content: "Edit your weekly workout plan." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: PlanPage,
 });
 
@@ -65,32 +65,40 @@ function PlanPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Plan" sub={planQ.data ? `Version ${planQ.data.version}` : "Build your week"}
-        action={<Button variant="hero" size="xl" disabled={!dirty || saving} onClick={save}>{saving ? "Saving…" : "Save plan"}</Button>} />
+      <PageHeader title="Your training plan" sub={planQ.data ? `Version ${planQ.data.version} · ${plan.days.length} workouts` : "Your week. Your workouts."}
+        action={<Button variant="hero" size="xl" disabled={!dirty || saving} onClick={save}><Save />{saving ? "Saving…" : "Save plan"}</Button>} />
 
-      <section className="rounded-2xl border border-border bg-card p-4">
-        <h2 className="font-bold">Weekly schedule</h2>
+      <section className="page-section">
+        <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="flex items-center gap-2 text-lg font-bold"><CalendarDays className="h-5 w-5 text-primary" /> Weekly schedule</h2><span className="text-xs font-medium text-muted-foreground">{dirty ? "Unsaved changes" : "All changes saved"}</span></div>
+        <div className="grid gap-x-10 sm:grid-cols-2">
+        <div>
         <label className="mt-3 block text-sm text-muted-foreground">Days per week</label>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 grid grid-cols-7 gap-1.5">
           {[1, 2, 3, 4, 5, 6, 7].map((n) => (
-            <Button key={n} variant={plan.days_per_week === n ? "default" : "secondary"} className="h-11 w-11 text-base font-bold"
+            <Button key={n} variant={plan.days_per_week === n ? "default" : "secondary"} className="h-11 w-full px-0 text-base font-bold"
               onClick={() => update({ ...plan, days_per_week: n, weekdays: plan.weekdays.slice(0, n) })}>{n}</Button>
           ))}
         </div>
-        <label className="mt-4 block text-sm text-muted-foreground">Workout days ({plan.weekdays.length}/{plan.days_per_week})</label>
+        </div><div>
+        <label className="mt-3 block text-sm text-muted-foreground">Workout days ({plan.weekdays.length}/{plan.days_per_week})</label>
         <div className="mt-2 grid grid-cols-7 gap-1.5">
           {WEEKDAYS.map((w, i) => (
             <Button key={w} variant={plan.weekdays.includes(i) ? "default" : "secondary"} className="h-11 px-0 font-bold" onClick={() => toggleWeekday(i)}>{w}</Button>
           ))}
         </div>
+        </div></div>
       </section>
 
       <datalist id="ex-names">{exNames.map((e) => <option key={e.id} value={e.name} />)}</datalist>
 
+      <div className="flex items-center justify-between"><h2 className="text-lg font-bold">Workout split</h2><span className="section-label">{String(plan.days.length).padStart(2, "0")} workouts</span></div>
+      {plan.days.length === 0 && <div className="flex items-center gap-4 border-l-2 border-primary bg-primary/5 px-5 py-6"><Dumbbell className="h-7 w-7 shrink-0 text-primary" /><div><h3 className="font-semibold">A fresh start</h3><p className="mt-1 text-sm text-muted-foreground">No workouts added yet.</p></div></div>}
+
       {plan.days.map((d, i) => (
-        <section key={d.id} className="rounded-2xl border border-border bg-card p-4">
+        <section key={d.id} className="workout-editor">
+          <p className="section-label mb-3 flex items-center gap-2"><span className="text-primary">{String(i + 1).padStart(2, "0")}</span> Workout · {d.exercises.length} exercises</p>
           <div className="flex flex-wrap items-center gap-2">
-            <Input value={d.name} placeholder="Workout name (e.g. Push Day)" onChange={(e) => setDay(i, { ...d, name: e.target.value })} className="h-12 min-w-0 flex-1 text-lg font-bold" />
+            <Input value={d.name} placeholder="Workout name (e.g. Push Day)" onChange={(e) => setDay(i, { ...d, name: e.target.value })} className="h-12 min-w-0 flex-[1_1_250px] text-lg font-bold" />
             <select value={d.weekday ?? ""} onChange={(e) => setDay(i, { ...d, weekday: e.target.value === "" ? null : Number(e.target.value) })}
               className="h-12 rounded-md border border-input bg-background px-3">
               <option value="">Any day</option>
@@ -109,16 +117,16 @@ function PlanPage() {
               const setEx = (e: PlanExercise) => setDay(i, { ...d, exercises: d.exercises.map((x, k) => (k === j ? e : x)) });
               const match = ex.name && exNames.find((n) => nameKey(n.name) === nameKey(ex.name) && n.name !== ex.name);
               return (
-                <div key={ex.id} className="rounded-xl bg-secondary p-3">
-                  <div className="flex items-center gap-2">
-                    <Input list="ex-names" value={ex.name} placeholder="Exercise name" onChange={(e) => setEx({ ...ex, name: e.target.value, exerciseId: null })} className="h-11 flex-1 bg-background font-semibold" />
+                <div key={ex.id} className="exercise-row">
+                  <div className="flex flex-wrap items-center gap-1">
+                    <Input list="ex-names" value={ex.name} placeholder="Exercise name" onChange={(e) => setEx({ ...ex, name: e.target.value, exerciseId: null })} className="h-11 min-w-0 flex-[1_1_180px] bg-background font-semibold" />
                     <Button size="icon" variant="ghost" aria-label="Move up" onClick={() => setDay(i, { ...d, exercises: move(d.exercises, j, -1) })}><ArrowUp /></Button>
                     <Button size="icon" variant="ghost" aria-label="Move down" onClick={() => setDay(i, { ...d, exercises: move(d.exercises, j, 1) })}><ArrowDown /></Button>
                     <Button size="icon" variant="ghost" aria-label="Duplicate exercise" onClick={() => { const ex2 = d.exercises.slice(); ex2.splice(j + 1, 0, { ...ex, id: uid() }); setDay(i, { ...d, exercises: ex2 }); }}><Copy /></Button>
                     <Button size="icon" variant="ghost" aria-label="Delete exercise" onClick={() => setDay(i, { ...d, exercises: d.exercises.filter((_, k) => k !== j) })}><Trash2 className="text-destructive" /></Button>
                   </div>
                   {match && (
-                    <button className="mt-1 text-sm text-primary underline" onClick={() => setEx({ ...ex, name: match.name, exerciseId: match.id })}>Use saved “{match.name}”</button>
+                    <Button variant="link" className="mt-1 h-auto p-0" onClick={() => setEx({ ...ex, name: match.name, exerciseId: match.id })}>Use saved “{match.name}”</Button>
                   )}
                   <div className="mt-2 grid grid-cols-3 gap-2 text-xs text-muted-foreground">
                     {([["sets", "Sets"], ["reps", "Reps"], ["rest", "Rest (sec)"]] as const).map(([k, label]) => (
@@ -139,16 +147,16 @@ function PlanPage() {
 
       <Button variant="outline" size="xl" className="w-full" onClick={() => setDays([...plan.days, { id: uid(), name: "", weekday: null, exercises: [] }])}><Plus /> Add workout day</Button>
 
-      <section className="rounded-2xl border border-border bg-card p-4">
+      <section className="page-section">
         <h2 className="mb-3 flex items-center gap-2 font-bold"><History className="h-5 w-5 text-primary" /> Version history</h2>
         {versions.data?.length === 0 && <p className="text-sm text-muted-foreground">No saved versions yet.</p>}
         <ul className="divide-y divide-border">
           {versions.data?.map((v) => (
             <li key={v.id}>
-              <button className="flex w-full justify-between py-3 text-left hover:text-primary" onClick={() => setViewing(v)}>
-                <span className="font-semibold">Version {v.version}{v.version === planQ.data?.version ? " (current)" : ""}</span>
-                <span className="text-sm text-muted-foreground">{new Date(v.saved_at).toLocaleString()}</span>
-              </button>
+              <Button variant="ghost" className="h-auto w-full flex-wrap justify-between gap-2 px-0 py-4 text-left" onClick={() => setViewing(v)}>
+                <span className="flex items-center gap-2 font-semibold">Version {v.version}{v.version === planQ.data?.version && <Check className="h-4 w-4 text-primary" />}</span>
+                <span className="text-xs text-muted-foreground">{new Date(v.saved_at).toLocaleString()}</span>
+              </Button>
             </li>
           ))}
         </ul>

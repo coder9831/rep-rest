@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/hero-barbell.jpg";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -48,18 +49,20 @@ function Index() {
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
       <div className="relative mx-auto flex min-h-screen max-w-xl flex-col justify-end px-6 pb-16">
         <p className="text-sm font-bold uppercase tracking-[0.3em] text-primary">Weight Tracker</p>
-        <h1 className="mt-3 text-5xl font-black uppercase leading-[0.95] tracking-tight text-foreground sm:text-6xl">
-          Lift. Log.<br />Get stronger.
+        <h1 className="mt-3 text-4xl font-black leading-tight text-foreground sm:text-6xl">
+          Tife's<br />Weight Tracker.
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">Your weekly plan, workout timers, every set logged, and progress you can see.</p>
-        <button
+        <Button
+          variant="secondary"
+          size="xl"
           onClick={signIn}
           disabled={busy}
-          className="mt-10 inline-flex h-12 items-center justify-center gap-[10px] rounded-full border border-[#8E918F] bg-[#131314] px-3 text-sm font-medium leading-5 text-[#E3E3E3] disabled:opacity-60"
+          className="mt-8 gap-3 border border-border"
         >
           <span aria-hidden="true" className="h-[18px] w-[18px]" dangerouslySetInnerHTML={{ __html: G }} />
           Continue with Google
-        </button>
+        </Button>
       </div>
     </main>
   );

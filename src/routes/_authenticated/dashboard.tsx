@@ -2,7 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Play, Scale, AlertCircle } from "lucide-react";
+import { Play, Scale, AlertCircle, ArrowUpRight, Dumbbell } from "lucide-react";
+import hero from "@/assets/hero-barbell.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,7 @@ import { fetchPlan, startSession } from "@/lib/data";
 import { WEEKDAYS, bodyweightDue, localDate, type WorkoutDay } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Train — Tife's Weight Tracker" }, { name: "description", content: "Start today's workout." }] }),
+  head: () => ({ meta: [{ title: "Train — Tife's Weight Tracker" }, { name: "description", content: "Start today's workout." }, { property: "og:title", content: "Train — Tife's Weight Tracker" }, { property: "og:description", content: "Start today's workout." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: Dashboard,
 });
 
@@ -55,10 +56,15 @@ function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Train" sub={`${WEEKDAYS[today]}day${days.some((d) => d.weekday === today) ? " — you have a workout scheduled" : ""}`} />
+      <PageHeader title="Ready to lift?" sub={new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} />
+      <div className="relative overflow-hidden border-b-2 border-primary bg-card">
+        <img src={hero} alt="Barbell ready for a strength training session" className="h-56 w-full object-cover sm:h-64" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/75 to-transparent" />
+        <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-8"><p className="section-label text-primary">Tife's Weight Tracker</p><h2 className="mt-3 text-3xl font-black leading-tight sm:text-4xl">Built one<br />rep at a time.</h2><div className="mt-5 flex gap-6 text-sm"><span><strong className="text-primary">{days.length}</strong> workouts</span><span><strong className="text-primary">{plan.data?.days_per_week ?? 0}</strong> days / week</span></div></div>
+      </div>
 
       {active.data && (
-        <Link to="/workout/$sessionId" params={{ sessionId: active.data.id }} className="flex items-center justify-between rounded-2xl bg-gradient-primary p-5 text-primary-foreground shadow-glow">
+        <Link to="/workout/$sessionId" params={{ sessionId: active.data.id }} className="flex items-center justify-between rounded-lg bg-primary p-5 text-primary-foreground shadow-glow">
           <div>
             <div className="text-xs font-bold uppercase tracking-widest">Workout in progress</div>
             <div className="text-xl font-black">{active.data.workout_name}</div>
@@ -68,22 +74,23 @@ function Dashboard() {
       )}
 
       {due && (
-        <div className="flex items-start gap-3 rounded-2xl border border-primary/50 bg-accent p-4 text-accent-foreground">
+        <div className="flex items-start gap-3 border-l-2 border-primary bg-primary/5 p-4 text-muted-foreground">
           <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
           <div className="text-sm">{lastBw ? "It's been a month since your last bodyweight entry. Time to weigh in." : "Log your bodyweight to start tracking it monthly."}</div>
         </div>
       )}
 
       <section className="space-y-3">
-        <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Workouts</h2>
+        <div className="flex items-center justify-between"><h2 className="text-lg font-bold">Your workouts</h2><Button asChild variant="link" className="px-0"><Link to="/plan">Edit plan <ArrowUpRight /></Link></Button></div>
         {plan.isSuccess && days.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-border p-8 text-center">
+          <div className="border-y border-border py-8 text-center">
+            <Dumbbell className="mx-auto mb-3 h-8 w-8 text-primary" />
             <p className="text-muted-foreground">No workout plan yet.</p>
             <Button asChild variant="hero" size="xl" className="mt-4"><Link to="/plan">Build your plan</Link></Button>
           </div>
         )}
         {sorted.map((d) => (
-          <div key={d.id} className={`flex items-center gap-4 rounded-2xl border bg-card p-4 ${d.weekday === today ? "border-primary" : "border-border"}`}>
+          <div key={d.id} className={`flex items-center gap-4 rounded-lg border bg-card p-5 transition-colors hover:border-primary/50 ${d.weekday === today ? "border-primary" : "border-border"}`}>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <span className="truncate text-lg font-bold">{d.name || "Untitled"}</span>
@@ -98,7 +105,7 @@ function Dashboard() {
         ))}
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-4">
+      <section className="page-section">
         <h2 className="mb-3 flex items-center gap-2 font-bold"><Scale className="h-5 w-5 text-primary" /> Bodyweight</h2>
         <div className="flex gap-2">
           <Input inputMode="decimal" placeholder="lb" value={weight} onChange={(e) => setWeight(e.target.value)} className="h-12 text-lg" />

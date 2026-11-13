@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { fmtDuration, localDate } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/history")({
-  head: () => ({ meta: [{ title: "History — Tife's Weight Tracker" }, { name: "description", content: "Past workouts on a calendar." }] }),
+  head: () => ({ meta: [{ title: "History — Tife's Weight Tracker" }, { name: "description", content: "Past workouts on a calendar." }, { property: "og:title", content: "History — Tife's Weight Tracker" }, { property: "og:description", content: "Past workouts on a calendar." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: HistoryPage,
 });
 
@@ -24,7 +24,7 @@ function HistoryPage() {
   return (
     <div className="space-y-6">
       <PageHeader title="History" sub={`${q.data?.length ?? 0} workouts logged`} />
-      <div className="flex justify-center rounded-2xl border border-border bg-card p-2">
+      <div className="flex justify-center border-y border-border py-5">
         <Calendar mode="single" selected={selected} onSelect={setSelected}
           modifiers={{ trained: dates }} modifiersClassNames={{ trained: "[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:font-bold rounded-md" }} />
       </div>
@@ -33,7 +33,7 @@ function HistoryPage() {
         const groups = new Map<string, any[]>();
         for (const r of [...s.set_logs].sort((a, b) => a.set_number - b.set_number)) groups.set(r.exercise_name, [...(groups.get(r.exercise_name) ?? []), r]);
         return (
-          <section key={s.id} className="rounded-2xl border border-border bg-card p-4">
+          <section key={s.id} className="rounded-lg border border-border bg-card p-5">
             <div className="flex items-baseline justify-between">
               <h2 className="text-xl font-bold">{s.workout_name}</h2>
               <span className="timer-digits text-primary">{fmtDuration(s.duration_seconds ?? 0)}</span>
