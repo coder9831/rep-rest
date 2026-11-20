@@ -1,6 +1,6 @@
 # Rep & Rest
 
-# Build: Tife's Weight Tracker
+# Build: IronLog
 
 ## Overview
 I'm a university student athlete who works out frequently. Build a website, just for my own use, that lets me create a weekly workout plan, run each workout with built-in timers, log the weight and reps I lift for every set, and track my progress over time. Every change I make to my workout plan must be saved, and I must be able to look back at older versions of my plan.

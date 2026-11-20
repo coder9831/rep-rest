@@ -22,13 +22,13 @@ const nav = [
 
 function Layout() {
   const { user } = Route.useRouteContext();
-  const name = String(user.user_metadata?.['full_name'] ?? "Tife");
+  const name = String(user.user_metadata?.['full_name'] ?? "Lifter");
   return (
     <div className="min-h-screen bg-background pb-24 md:pb-0 md:pl-60">
       <aside className="fixed inset-y-0 left-0 hidden w-60 flex-col border-r border-border bg-sidebar px-5 py-8 md:flex">
         <Link to="/dashboard" className="mb-12 flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground"><Dumbbell className="h-6 w-6" /></span>
-          <span className="text-2xl font-black">Tife<span className="text-primary">.</span>lift</span>
+          <span className="text-2xl font-black">Iron<span className="text-primary">Log</span></span>
         </Link>
         <p className="section-label mb-3 px-3">Training</p>
         {nav.map((n) => (
@@ -44,8 +44,8 @@ function Layout() {
         </div>
       </aside>
       <header className="flex items-center justify-between border-b border-border px-5 py-4 md:px-10">
-        <Link to="/dashboard" className="flex items-center gap-2 font-black md:hidden"><Dumbbell className="h-5 w-5 text-primary" />Tife<span className="text-primary">.</span>lift</Link>
-        <span className="section-label hidden md:block">Tife's Weight Tracker</span>
+        <Link to="/dashboard" className="flex items-center gap-2 font-black md:hidden"><Dumbbell className="h-5 w-5 text-primary" />Iron<span className="text-primary">Log</span></Link>
+        <span className="section-label hidden md:block">IronLog</span>
         <span className="text-xs font-medium text-muted-foreground">{new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
       </header>
       <main className="mx-auto max-w-5xl px-5 py-7 md:px-10 md:py-10">

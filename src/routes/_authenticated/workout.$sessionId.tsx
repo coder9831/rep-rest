@@ -11,7 +11,7 @@ import { fetchFinishedLogs, lastByExercise, exKey } from "@/lib/data";
 import { fmtDuration, type WorkoutDay } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/workout/$sessionId")({
-  head: () => ({ meta: [{ title: "Workout — Tife's Weight Tracker" }, { name: "description", content: "Workout in progress." }, { property: "og:title", content: "Workout — Tife's Weight Tracker" }, { property: "og:description", content: "Workout in progress." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({ meta: [{ title: "Workout — IronLog" }, { name: "description", content: "Workout in progress." }, { property: "og:title", content: "Workout — IronLog" }, { property: "og:description", content: "Workout in progress." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: WorkoutPage,
 });
 

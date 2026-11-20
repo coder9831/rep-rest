@@ -9,7 +9,7 @@ import { fetchFinishedLogs, exKey } from "@/lib/data";
 import { epley, volume } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/progress")({
-  head: () => ({ meta: [{ title: "Progress — Tife's Weight Tracker" }, { name: "description", content: "Strength and volume charts." }, { property: "og:title", content: "Progress — Tife's Weight Tracker" }, { property: "og:description", content: "Strength and volume charts." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({ meta: [{ title: "Progress — IronLog" }, { name: "description", content: "Strength and volume charts." }, { property: "og:title", content: "Progress — IronLog" }, { property: "og:description", content: "Strength and volume charts." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: ProgressPage,
 });
 

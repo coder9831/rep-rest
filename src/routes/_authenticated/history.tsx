@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { fmtDuration, localDate } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/history")({
-  head: () => ({ meta: [{ title: "History — Tife's Weight Tracker" }, { name: "description", content: "Past workouts on a calendar." }, { property: "og:title", content: "History — Tife's Weight Tracker" }, { property: "og:description", content: "Past workouts on a calendar." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({ meta: [{ title: "History — IronLog" }, { name: "description", content: "Past workouts on a calendar." }, { property: "og:title", content: "History — IronLog" }, { property: "og:description", content: "Past workouts on a calendar." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: HistoryPage,
 });
 

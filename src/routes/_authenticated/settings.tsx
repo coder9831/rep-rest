@@ -11,7 +11,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { deleteAccount } from "@/lib/account.functions";
 
 export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({ meta: [{ title: "Settings — Tife's Weight Tracker" }, { name: "description", content: "Account settings." }, { property: "og:title", content: "Settings — Tife's Weight Tracker" }, { property: "og:description", content: "Account settings." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({ meta: [{ title: "Settings — IronLog" }, { name: "description", content: "Account settings." }, { property: "og:title", content: "Settings — IronLog" }, { property: "og:description", content: "Account settings." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: SettingsPage,
 });
 

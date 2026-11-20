@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tife's Weight Tracker — Sign in" },
+      { title: "IronLog — Sign in" },
       { name: "description", content: "Plan your week, run workouts with timers, log every set and track progress." },
-      { property: "og:title", content: "Tife's Weight Tracker" },
+      { property: "og:title", content: "IronLog" },
       { property: "og:description", content: "Plan your week, run workouts with timers, log every set and track progress." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -48,9 +48,9 @@ function Index() {
       <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
       <div className="relative mx-auto flex min-h-screen max-w-xl flex-col justify-end px-6 pb-16">
-        <p className="text-sm font-bold uppercase tracking-[0.3em] text-primary">Weight Tracker</p>
+        <p className="text-sm font-bold uppercase tracking-[0.3em] text-primary">Weight &amp; Strength Tracker</p>
         <h1 className="mt-3 text-4xl font-black leading-tight text-foreground sm:text-6xl">
-          Tife's<br />Weight Tracker.
+          Iron<span className="text-primary">Log</span>.
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">Your weekly plan, workout timers, every set logged, and progress you can see.</p>
         <Button

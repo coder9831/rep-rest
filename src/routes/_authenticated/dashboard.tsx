@@ -12,7 +12,7 @@ import { fetchPlan, startSession } from "@/lib/data";
 import { WEEKDAYS, bodyweightDue, localDate, type WorkoutDay } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Train — Tife's Weight Tracker" }, { name: "description", content: "Start today's workout." }, { property: "og:title", content: "Train — Tife's Weight Tracker" }, { property: "og:description", content: "Start today's workout." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({ meta: [{ title: "Train — IronLog" }, { name: "description", content: "Start today's workout." }, { property: "og:title", content: "Train — IronLog" }, { property: "og:description", content: "Start today's workout." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: Dashboard,
 });
 
@@ -60,7 +60,7 @@ function Dashboard() {
       <div className="relative overflow-hidden border-b-2 border-primary bg-card">
         <img src={hero} alt="Barbell ready for a strength training session" className="h-56 w-full object-cover sm:h-64" />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/75 to-transparent" />
-        <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-8"><p className="section-label text-primary">Tife's Weight Tracker</p><h2 className="mt-3 text-3xl font-black leading-tight sm:text-4xl">Built one<br />rep at a time.</h2><div className="mt-5 flex gap-6 text-sm"><span><strong className="text-primary">{days.length}</strong> workouts</span><span><strong className="text-primary">{plan.data?.days_per_week ?? 0}</strong> days / week</span></div></div>
+        <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-8"><p className="section-label text-primary">IronLog</p><h2 className="mt-3 text-3xl font-black leading-tight sm:text-4xl">Built one<br />rep at a time.</h2><div className="mt-5 flex gap-6 text-sm"><span><strong className="text-primary">{days.length}</strong> workouts</span><span><strong className="text-primary">{plan.data?.days_per_week ?? 0}</strong> days / week</span></div></div>
       </div>
 
       {active.data && (
