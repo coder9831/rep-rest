@@ -12,7 +12,7 @@ import { fetchExercises, fetchPlan, savePlan } from "@/lib/data";
 import { WEEKDAYS, nameKey, uid, type PlanSnapshot, type WorkoutDay, type PlanExercise } from "@/lib/training";
 
 export const Route = createFileRoute("/_authenticated/plan")({
-  head: () => ({ meta: [{ title: "Plan — IronLog" }, { name: "description", content: "Edit your weekly workout plan." }, { property: "og:title", content: "Plan — IronLog" }, { property: "og:description", content: "Edit your weekly workout plan." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({ meta: [{ title: "Plan — I.S.I" }, { name: "description", content: "Edit your weekly workout plan." }, { property: "og:title", content: "Plan — I.S.I" }, { property: "og:description", content: "Edit your weekly workout plan." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: PlanPage,
 });
 

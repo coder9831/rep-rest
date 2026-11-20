@@ -4,14 +4,15 @@ import { toast } from "sonner";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/hero-barbell.jpg";
+import logo from "@/assets/isi-logo.png";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "IronLog — Sign in" },
+      { title: "I.S.I — Sign in" },
       { name: "description", content: "Plan your week, run workouts with timers, log every set and track progress." },
-      { property: "og:title", content: "IronLog" },
+      { property: "og:title", content: "I.S.I" },
       { property: "og:description", content: "Plan your week, run workouts with timers, log every set and track progress." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -49,8 +50,8 @@ function Index() {
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
       <div className="relative mx-auto flex min-h-screen max-w-xl flex-col justify-end px-6 pb-16">
         <p className="text-sm font-bold uppercase tracking-[0.3em] text-primary">Weight &amp; Strength Tracker</p>
-        <h1 className="mt-3 text-4xl font-black leading-tight text-foreground sm:text-6xl">
-          Iron<span className="text-primary">Log</span>.
+        <h1 className="mt-3">
+          <img src={logo} alt="I.S.I" width={760} height={446} className="h-20 w-auto sm:h-28" />
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">Your weekly plan, workout timers, every set logged, and progress you can see.</p>
         <Button
